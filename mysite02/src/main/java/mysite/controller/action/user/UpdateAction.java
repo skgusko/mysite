@@ -43,7 +43,7 @@ public class UpdateAction implements Action {
 		
 		authUser.setName(name); //header.jsp에서 이름 변경 반영되도록 설정
 		
-		response.sendRedirect(request.getContextPath() + "/user?a=updateform");
+		response.sendRedirect(request.getContextPath() + "/user?a=updateform&result=success");
 	}
 
 }
