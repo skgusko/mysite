@@ -109,43 +109,33 @@ public class UserDao {
 		return conn;
 	}
 
-	public int updateNameAndGender(UserVo vo) {
+	public int update(UserVo vo) {
 		int count = 0;
 		
 		try (
 				Connection conn = getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("update user set name=?, gender=? where email=?");
 		) {
-			pstmt.setString(1, vo.getName()); 
-			pstmt.setString(2, vo.getGender());
-			pstmt.setString(3, vo.getEmail());
-			
-			count = pstmt.executeUpdate();
-			
+			if ("".equals(vo.getPassword())) {
+				PreparedStatement pstmt1 = conn.prepareStatement("update user set name=?, gender=? where email=?");
+				
+				pstmt1.setString(1, vo.getName()); 
+				pstmt1.setString(2, vo.getGender());
+				pstmt1.setString(3, vo.getEmail());
+				
+				count = pstmt1.executeUpdate();
+			} else {
+				PreparedStatement pstmt2 = conn.prepareStatement("update user set name=?, password=?, gender=? where email=?");
+				
+				pstmt2.setString(1, vo.getName()); 
+				pstmt2.setString(2, vo.getPassword());
+				pstmt2.setString(3, vo.getGender());
+				pstmt2.setString(4, vo.getEmail());
+				
+				count = pstmt2.executeUpdate();
+			}
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
 		}
-		return count;
-	}
-
-	public int updateNameAndPasswordAndGender(UserVo vo) {
-		int count = 0;
-		
-		try (
-				Connection conn = getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("update user set name=?, password=?, gender=? where email=?");
-		) {
-			pstmt.setString(1, vo.getName()); 
-			pstmt.setString(2, vo.getPassword());
-			pstmt.setString(3, vo.getGender());
-			pstmt.setString(4, vo.getEmail());
-			
-			count = pstmt.executeUpdate();
-			
-		} catch (SQLException e) {
-			System.out.println("error: " + e);
-		}
-		
 		return count;
 	}
 }
