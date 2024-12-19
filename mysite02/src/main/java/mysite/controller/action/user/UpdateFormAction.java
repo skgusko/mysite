@@ -30,8 +30,8 @@ public class UpdateFormAction implements Action {
 		//////////////////////////////////////////////////////////////
 		
 		// 회원정보 수정 (과제)
-//		UserVo vo = new UserDao().findById(authUser.getId()); //pw 가져올필요 없음
-//		request.setAttribute("vo", vo); //jsp에 보내기
+		UserVo vo = new UserDao().findById(authUser.getId()); //pw 가져올필요 없음
+		request.setAttribute("vo", vo); //jsp에 보내기
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/updateform.jsp");
 		rd.forward(request, response);
