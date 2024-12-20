@@ -1,3 +1,6 @@
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -7,8 +10,9 @@
 <link href="<%=request.getContextPath() %>/assets/css/main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<div id="container">
-		<jsp:include page="/WEB-INF/views/includes/header.jsp"/>
+	<div id="container">"
+		<!-- <jsp:include page="/WEB-INF/views/includes/header.jsp"/> -->
+		<c:import url="/WEB-INF/views/includes/header.jsp"/>
 		<div id="wrapper">
 			<div id="content">
 				<div id="site-introduction">
@@ -23,8 +27,8 @@
 				</div>
 			</div>
 		</div>
-		<jsp:include page="/WEB-INF/views/includes/navigation.jsp"/>
-		<jsp:include page="/WEB-INF/views/includes/footer.jsp"/>
+		<c:import url="/WEB-INF/views/includes/navigation.jsp"/>
+		<c:import url="/WEB-INF/views/includes/footer.jsp"/>
 	</div>
 </body>
 </html>
