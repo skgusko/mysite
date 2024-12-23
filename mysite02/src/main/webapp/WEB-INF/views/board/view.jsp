@@ -37,8 +37,10 @@
 				</table>
 				<div class="bottom">
 					<a href="${pageContext.request.contextPath }/board">글목록</a>
-					<a href="">답글</a>
-					<a href="">글수정</a>
+					<a href="${pageContext.request.contextPath }/board?a=writeform&g_no=${vo.gNo}&o_no=${vo.oNo}&depth=${vo.depth}">답글</a>
+					<c:if test='${sessionScope.authUser.id == vo.userId }'>
+						<a href="${pageContext.request.contextPath }/board?a=modifyform&id=<%=vo.getId() %>">글수정</a>
+					</c:if>
 				</div>
 			</div>
 		</div>

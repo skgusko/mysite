@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import mysite.controller.action.board.ListAction;
+import mysite.controller.action.board.ModifyFormAction;
 import mysite.controller.action.board.ViewAction;
 import mysite.controller.action.board.WriteAction;
 import mysite.controller.action.board.WriteFormAction;
@@ -19,7 +20,8 @@ public class BoardServlet extends ActionServlet {
 	private Map<String, Action> mapAction = Map.of(
 				"view", new ViewAction(),
 				"writeform", new WriteFormAction(),
-				"write", new WriteAction()
+				"write", new WriteAction(),
+				"modifyform", new ModifyFormAction()
 //				"insert", new InsertAction(),
 //				"deleteform", new DeleteFormAction(),
 //				"delete", new DeleteAction()

@@ -126,4 +126,22 @@ public class BoardDao {
 		return count;
 		
 	}
+
+	public int findgNo() {
+		int maxgNo = 0;
+		
+		try (
+				Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("select max(g_no) from board");
+				ResultSet rs = pstmt.executeQuery();
+		) {
+			if (rs.next()) {
+				maxgNo = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			System.out.println("error: " + e);
+		}
+		
+		return maxgNo + 1; //새로운 그룹 번호 
+	}
 }
