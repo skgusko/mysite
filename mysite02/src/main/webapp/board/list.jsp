@@ -2,11 +2,6 @@
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt"%>
 <%@ taglib uri="jakarta.tags.functions" prefix="fn"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="mysite.vo.BoardVo" %>
-<%
-	List<BoardVo> list = (List<BoardVo>)request.getAttribute("list");
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,28 +26,44 @@
 						<th>조회수</th>
 						<th>작성일</th>
 						<th>&nbsp;</th>
-					</tr>	
-				<%
-					int count = list.size();
-					int index = 0;
-					for (BoardVo vo : list) {
-				%>
+					</tr>				
 					<tr>
-						<td>[<%=count-index++ %>]</td>
-						<td style="text-align:left; padding-left:<%=index * vo.getDepth() %>px"> <!-- padding-left:${vo.depth} -->
-							<c:if test='${vo.depth > 0 }'>
-								<img src="${pageContext.request.contextPath }/assets/images/reply.png}">
-							</c:if>
-							<a href="${pageContext.request.contextPath }/board?a=view&id=<%=vo.getId() %>"><%=vo.getTitle() %></a>
+						<td>3</td>
+						<td style="text-align:left; padding-left:${ 0 * 20 }px"> <!-- padding-left:${vo.depth} -->
+							<a href="">세 번째 글입니다.</a>
 						</td>
-						<td><%=vo.getUserName() %></td>
-						<td><%=vo.getHit() %></td>
-						<td><%=vo.getRegDate() %></td>
+						<td>안대혁</td>
+						<td>3</td>
+						<td>2015-10-11 12:04:20</td>
 						<td><a href="" class="del">삭제</a></td>
 					</tr>
-				<%
-					}
-				%>
+					<tr>
+						<td>2</td>
+						<td style="text-align:left; padding-left:${ 1 * 20 }px">
+						<img src="${pageContext.request.contextPath }/assets/images/reply.png" />
+							<%-- <c:if test='${vo.depth > 0 }'>
+								<img src="${pageContext.request.contextPath }/assets/images/reply.png}">
+							</c:if> --%>
+							<a href="">두 번째 글입니다.</a>
+						</td>
+						<td>안대혁</td>
+						<td>3</td>
+						<td>2015-10-02 12:04:12</td>
+						<td><a href="" class="del">삭제</a></td>
+					</tr>
+					<tr>
+						<td>1</td>
+						<td style="text-align:left; padding-left:${ 2 * 20 }px">
+							<%-- <c:if test='${vo.depth > 0 }'>
+								<img src="${pageContext.request.contextPath }/assets/images/reply.png}">
+							</c:if> --%>
+							<a href="">첫 번째 글입니다.</a>
+						</td>
+						<td>안대혁</td>
+						<td>3</td>
+						<td>2015-09-25 07:24:32</td>
+						<td><a href="" class="del">삭제</a></td>
+					</tr>
 				</table>
 				
 				<!-- pager 추가 -->
@@ -70,10 +81,7 @@
 				<!-- pager 추가 -->
 				
 				<div class="bottom">
-					<c:if test="${not empty sessionScope.authUser}">
-	        			<a href="${pageContext.request.contextPath}/board?a=writeform" id="new-book">글쓰기</a>
-	    			</c:if>
-					<!--  <a href="${pageContext.request.contextPath }/board?a=writeform" id="new-book">글쓰기</a>  -->
+					<a href="" id="new-book">글쓰기</a>
 				</div>				
 			</div>
 		</div>
