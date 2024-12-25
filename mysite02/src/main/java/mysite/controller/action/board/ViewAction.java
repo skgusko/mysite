@@ -14,11 +14,11 @@ public class ViewAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int currentPage = 0;
+		int currentPage = 1;
 		if (request.getParameter("page") != null) {
 			currentPage = Integer.parseInt(request.getParameter("page"));
-			request.setAttribute("currentPage", currentPage);
 		}
+		request.setAttribute("currentPage", currentPage);
 		
 		Long id = Long.parseLong(request.getParameter("id"));
 		

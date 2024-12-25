@@ -11,6 +11,7 @@ import mysite.controller.action.board.DeleteAction;
 import mysite.controller.action.board.ListAction;
 import mysite.controller.action.board.ModifyAction;
 import mysite.controller.action.board.ModifyFormAction;
+import mysite.controller.action.board.SearchAction;
 import mysite.controller.action.board.ViewAction;
 import mysite.controller.action.board.WriteAction;
 import mysite.controller.action.board.WriteFormAction;
@@ -25,9 +26,8 @@ public class BoardServlet extends ActionServlet {
 				"write", new WriteAction(),
 				"modifyform", new ModifyFormAction(),
 				"modify", new ModifyAction(),
-//				"insert", new InsertAction(),
-//				"deleteform", new DeleteFormAction(),
-				"delete", new DeleteAction()
+				"delete", new DeleteAction(),
+				"search", new SearchAction()
 			);
 	
 	@Override

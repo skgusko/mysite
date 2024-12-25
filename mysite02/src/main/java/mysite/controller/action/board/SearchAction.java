@@ -11,13 +11,15 @@ import mysite.controller.ActionServlet.Action;
 import mysite.dao.BoardDao;
 import mysite.vo.BoardVo;
 
-public class ListAction implements Action {
-	
+public class SearchAction implements Action {
+
 	private static final int COUNT_PER_PAGE = 5;  // 한 페이지당 게시글 수
 	private static final int PAGE_GROUP_COUNT = 5; // 한 번에 보여줄 페이지 수 (1,2,3,4,5)
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String keyword = request.getParameter("kwd");
+		
 		// 현재 페이지 설정
 		int currentPage = 1;
 		if (request.getParameter("page") != null) {
@@ -27,7 +29,7 @@ public class ListAction implements Action {
 		BoardDao dao = new BoardDao();
 		
 		// 게시글 총 개수  
-		int boardTotalCount = dao.getBoardTotalCount();
+		int boardTotalCount = dao.getCountByKwd(keyword);
 		
 		// 총 페이지 수 계산
 		int pageCount = (int) Math.ceil((double) boardTotalCount / COUNT_PER_PAGE);
@@ -44,7 +46,7 @@ public class ListAction implements Action {
 		int startIndex = (currentPage - 1) * COUNT_PER_PAGE;
 		
 		// 게시글 가져오기
-		List<BoardVo> list = dao.findBoard(startIndex, COUNT_PER_PAGE);
+		List<BoardVo> list = dao.findBoardByKwd(keyword, startIndex, COUNT_PER_PAGE);
 		
 		// JSP로 전달
 		request.setAttribute("list", list);
@@ -54,6 +56,7 @@ public class ListAction implements Action {
 		request.setAttribute("endPage", endPage);
 		request.setAttribute("prevPage", prevPage);
 		request.setAttribute("nextPage", nextPage);
+		request.setAttribute("keyword", keyword);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/board/list.jsp");
 		rd.forward(request, response);

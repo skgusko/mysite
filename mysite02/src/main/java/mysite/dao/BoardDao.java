@@ -315,4 +315,79 @@ public class BoardDao {
 		} 
 		return conn;
 	}
+
+
+	public int getCountByKwd(String keyword) {
+		int result = 0;
+		
+		try (
+				Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("select count(*) from board where title like ? or contents like ?");
+		) {
+			String searchKeyword = "%" + keyword + "%";
+			
+			pstmt.setString(1, searchKeyword); 
+			pstmt.setString(2, searchKeyword); 
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				result = rs.getInt(1);
+			}
+			rs.close();
+		} catch (SQLException e) {
+			System.out.println("error: " + e);
+		}
+		return result;
+	}
+
+
+	public List<BoardVo> findBoardByKwd(String keyword, int startIndex, int countPerPage) {
+		List<BoardVo> result = new ArrayList<BoardVo>();
+		
+		try (
+				Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(
+						"select b.id, b.title, u.name, b.hit, date_format(b.reg_date, '%Y-%m-%d %h:%i:%s'), b.depth, u.id" +
+						"  from board b join user u" +
+						"    on b.user_id=u.id" +
+						" where title like ? or contents like ?" +
+						" order by g_no desc, o_no asc" + 
+						" limit ?, ?");
+		)
+		{
+			String searchKeyword = "%" + keyword + "%";
+			
+			pstmt.setString(1, searchKeyword);
+			pstmt.setString(2, searchKeyword);
+			pstmt.setInt(3, startIndex);
+			pstmt.setInt(4, countPerPage);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Long id = rs.getLong(1);
+				String title = rs.getString(2);
+				String userName = rs.getString(3);
+				int hit = rs.getInt(4);
+				String regDate = rs.getString(5);
+				int depth = rs.getInt(6);
+				Long userId = rs.getLong(7);
+				
+				BoardVo vo = new BoardVo();
+				vo.setId(id);
+				vo.setTitle(title);
+				vo.setUserName(userName);
+				vo.setHit(hit);
+				vo.setRegDate(regDate);
+				vo.setDepth(depth);
+				vo.setUserId(userId);
+				
+				result.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("error: " + e);
+		}
+		return result;
+	}
 }

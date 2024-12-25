@@ -16,8 +16,9 @@
 		<jsp:include page="/WEB-INF/views/includes/header.jsp"/>
 		<div id="content">
 			<div id="board">
-				<form id="search_form" action="" method="post">
-					<input type="text" id="kwd" name="kwd" value="">
+				<form id="search_form" action="${pageContext.request.contextPath}/board" method="post">
+					<input type = "hidden" name = "a" value="search">
+					<input type="text" id="kwd" name="kwd" value="${keyword}">
 					<input type="submit" value="찾기">
 				</form>
 				<table class="tbl-ex">
@@ -32,7 +33,7 @@
 					<c:forEach var="vo" items="${list}" varStatus="status">
 						<tr>
 							<td>[${fn:length(list) - status.index}]</td>
-							<td style="text-align:left; padding-left:${vo.depth * 20 }px"> <!-- padding-left:${vo.depth} -->
+							<td style="text-align:left; padding-left:${vo.depth * 20 }px"> 	
 								<c:if test="${vo.depth > 0 }">
 									<img src="${pageContext.request.contextPath }/assets/images/reply.png">
 								</c:if>
@@ -54,7 +55,7 @@
 				</table>
 				
 				<!-- pager 추가 -->
-				<div class="pager">
+				<div class="pager">	
 				    <ul>
 				        <!-- 이전 페이지 그룹 -->
 				        <li>
@@ -70,7 +71,14 @@
 			                <c:choose>
 			                    <c:when test="${i <= pageCount}">
 			                        <li class="${i == currentPage ? 'selected' : ''}">
-			                        	<a href="${pageContext.request.contextPath}/board?page=${i}">${i}</a>
+			                        	<c:choose>
+			                        		<c:when test="${empty keyword }">
+			                        			<a href="${pageContext.request.contextPath}/board?page=${i}">${i}</a>
+			                        		</c:when>
+			                        		<c:otherwise>
+												<a href="${pageContext.request.contextPath}/board?a=search&page=${i}&kwd=${keyword}">${i}</a>			                        		
+			                        		</c:otherwise>
+			                        	</c:choose>
 		                        	</li>
 			                    </c:when>
 			                    <c:otherwise>
