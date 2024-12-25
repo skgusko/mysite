@@ -37,27 +37,25 @@ public class WriteAction implements Action {
 		vo.setHit(0);
 		vo.setUserId(userId);
 		
-		String gNo = request.getParameter("g_no"); //부모글의 g_no (게시글 그룹 번호)
-		String oNo = request.getParameter("o_no"); //부모글의 o_no (그룹 내 정렬 순서)
-		String depth = request.getParameter("depth"); //부모글의 depth
-
 		BoardDao dao = new BoardDao();
 		
-		if (gNo == null) {
-			// 새글쓰기 
+		if (request.getParameter("g_no") == null) { //새글쓰기인 경우
 			int newgNo = dao.findgNo();
 			vo.setgNo(newgNo);
 			vo.setoNo(1);
 			vo.setDepth(0);
 		} else {
 			// 답글 
+			int gNo = Integer.parseInt(request.getParameter("g_no")); //부모글의 g_no (게시글 그룹 번호)
+			int oNo = Integer.parseInt(request.getParameter("o_no")); //부모글의 o_no (그룹 내 정렬 순서)
+			int depth = Integer.parseInt(request.getParameter("depth")); //부모글의 depth
 			
 			// 기존 글의 o_no 값 증가
-//	        dao.updateONo(gNo, oNo);
-			
-			vo.setgNo(Integer.parseInt(gNo));
-			vo.setoNo(Integer.parseInt(oNo) + 1);
-			vo.setDepth(Integer.parseInt(depth + 1));
+	        dao.updateOrderNo(gNo, oNo, depth);
+	        
+			vo.setgNo(gNo);
+			vo.setoNo(oNo + 1);
+			vo.setDepth(depth + 1);
 		}
 		
 		dao.write(vo);

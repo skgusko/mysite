@@ -4,9 +4,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="mysite.vo.BoardVo" %>
-<%
-	List<BoardVo> list = (List<BoardVo>)request.getAttribute("list");
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,41 +29,69 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>	
-				<%
-					int count = list.size();
-					int index = 0;
-					for (BoardVo vo : list) {
-				%>
-					<tr>
-						<td>[<%=count-index++ %>]</td>
-						<td style="text-align:left; padding-left:<%=index * vo.getDepth() %>px"> <!-- padding-left:${vo.depth} -->
-							<c:if test='${vo.depth > 0 }'>
-								<img src="${pageContext.request.contextPath }/assets/images/reply.png}">
-							</c:if>
-							<a href="${pageContext.request.contextPath }/board?a=view&id=<%=vo.getId() %>"><%=vo.getTitle() %></a>
-						</td>
-						<td><%=vo.getUserName() %></td>
-						<td><%=vo.getHit() %></td>
-						<td><%=vo.getRegDate() %></td>
-						<td><a href="" class="del">삭제</a></td>
-					</tr>
-				<%
-					}
-				%>
+					<c:forEach var="vo" items="${list}" varStatus="status">
+						<tr>
+							<td>[${fn:length(list) - status.index}]</td>
+							<td style="text-align:left; padding-left:${vo.depth * 20 }px"> <!-- padding-left:${vo.depth} -->
+								<c:if test="${vo.depth > 0 }">
+									<img src="${pageContext.request.contextPath }/assets/images/reply.png">
+								</c:if>
+								<a href="${pageContext.request.contextPath }/board?a=view&id=${vo.id }&page=${currentPage }">${vo.title }</a>
+							</td>
+							<td>${vo.userName }</td>
+							<td>${vo.hit }</td>
+							<td>${vo.regDate }</td>
+							<c:choose>
+								<c:when test="${sessionScope.authUser.id == vo.userId }">
+									<td><a href="${pageContext.request.contextPath }/board?a=delete&id=${vo.id }" class="del">삭제</a></td>
+								</c:when>
+								<c:otherwise>
+									<td></td>
+								</c:otherwise>
+							</c:choose>
+						</tr>
+					</c:forEach>
 				</table>
 				
 				<!-- pager 추가 -->
 				<div class="pager">
-					<ul>
-						<li><a href="">◀</a></li>
-						<li><a href="">1</a></li>
-						<li class="selected">2</li>
-						<li><a href="">3</a></li>
-						<li>4</li>
-						<li>5</li>
-						<li><a href="">▶</a></li>
-					</ul>
-				</div>					
+				    <ul>
+				        <!-- 이전 페이지 그룹 -->
+				        <li>
+				            <c:if test="${prevPage > 0}">
+				                <a href="${pageContext.request.contextPath}/board?page=${prevPage}">◀</a>
+				            </c:if>
+				            <c:if test="${prevPage == 0}">
+				                <span>◀</span>
+				            </c:if>
+				        </li>
+				        <!-- 페이지 숫자 -->
+				        <c:forEach var="i" begin="${beginPage}" end="${endPage}">
+			                <c:choose>
+			                    <c:when test="${i <= pageCount}">
+			                        <li class="${i == currentPage ? 'selected' : ''}">
+			                        	<a href="${pageContext.request.contextPath}/board?page=${i}">${i}</a>
+		                        	</li>
+			                    </c:when>
+			                    <c:otherwise>
+			                        <li>
+			                        	<span>${i}</span>
+			                        </li>
+			                    </c:otherwise>
+			                </c:choose>
+				        </c:forEach>
+				
+				        <!-- 다음 페이지 그룹 -->
+				        <li>
+				            <c:if test="${nextPage > 0}">
+				                <a href="${pageContext.request.contextPath}/board?page=${nextPage}">▶</a>
+				            </c:if>
+				            <c:if test="${nextPage == 0}">
+				                <span>▶</span>
+				            </c:if>
+				        </li>
+				    </ul>
+				</div>	
 				<!-- pager 추가 -->
 				
 				<div class="bottom">

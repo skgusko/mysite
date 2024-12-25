@@ -16,16 +16,25 @@
 			<div id="board">
 				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board">
 					<input type = "hidden" name = "a" value="write">
-					<input type = "hidden" name = "g_no" value="${g_no }">
-					<input type = "hidden" name = "o_no" value="${o_no }">
-					<input type = "hidden" name = "depth" value="${depth }">
+						<c:if test='${vo != null }'> 
+							<input type = "hidden" name = "g_no" value="${vo.gNo }">
+							<input type = "hidden" name = "o_no" value="${vo.oNo }">
+							<input type = "hidden" name = "depth" value="${vo.depth }">		
+						</c:if>
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글쓰기</th>
 						</tr>
 						<tr>
 							<td class="label">제목</td>
-							<td><input type="text" name="title" value=""></td>
+							<c:choose>
+								<c:when test='${vo != null}'>
+									<td><input type="text" name="title" value="RE: ${vo.title }"></td>
+								</c:when>
+								<c:otherwise>
+									<td><input type="text" name="title" value=""></td>		
+								</c:otherwise>
+							</c:choose>
 						</tr>
 						<tr>
 							<td class="label">내용</td>

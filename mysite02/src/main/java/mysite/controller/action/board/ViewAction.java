@@ -14,13 +14,22 @@ public class ViewAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int currentPage = 0;
+		if (request.getParameter("page") != null) {
+			currentPage = Integer.parseInt(request.getParameter("page"));
+			request.setAttribute("currentPage", currentPage);
+		}
+		
 		Long id = Long.parseLong(request.getParameter("id"));
 		
-		BoardVo vo = new BoardDao().findById(id);
+		BoardDao dao = new BoardDao();
+		
+		dao.updateViews(id);
+		
+		BoardVo vo = dao.findById(id);
 		request.setAttribute("vo", vo);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/board/view.jsp"); //이 JSP로 넘길거야
 		rd.forward(request, response);
 	}
-
 }
