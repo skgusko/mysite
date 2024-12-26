@@ -236,9 +236,8 @@ public class BoardDao {
 				Connection conn = getConnection();
 				PreparedStatement pstmt1 = conn.prepareStatement("update board set o_no=o_no+1 where g_no=? and o_no>=?+1");
 		) {
-				pstmt1.setInt(1, depth); 
-				pstmt1.setInt(2, gNo);
-				pstmt1.setInt(3, oNo);
+				pstmt1.setInt(1, gNo);
+				pstmt1.setInt(2, oNo);
 				
 				count = pstmt1.executeUpdate();
 		} catch (SQLException e) {
