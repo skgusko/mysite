@@ -17,7 +17,7 @@ public class DeleteAction implements Action {
 		
 		new GuestbookDao().deleteByIdAndPassword(id, password);
 		
-		response.sendRedirect("/mysite02/guestbook");
+		response.sendRedirect(request.getContextPath() + "/guestbook");
 	}
 
 }

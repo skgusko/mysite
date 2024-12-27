@@ -1,6 +1,7 @@
 show tables;
 select * from user;
 
+
 select * from board;
 desc board;
 
@@ -32,5 +33,7 @@ update board set title=?, contents=? where id=?;
 select b.id, b.title, u.name, b.hit, date_format(b.reg_date, '%Y-%m-%d %h:%i:%s'), b.depth, u.id 
 from board b join user u 
 on b.user_id=u.id
-order by g_no desc, o_no asc
-limit 0, 2;
+where title like '%ㅎㅇ%' or contents like '%ㅎㅇ%'
+order by g_no desc, o_no asc;
+
+select count(*) from board where title like '%ㅎㅇ%' or contents like '%ㅎㅇ%';
