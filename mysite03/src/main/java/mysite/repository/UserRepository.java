@@ -1,4 +1,4 @@
-package mysite.dao;
+package mysite.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,9 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.stereotype.Repository;
+
 import mysite.vo.UserVo;
 
-public class UserDao {
+@Repository
+public class UserRepository {
 
 	public int insert(UserVo vo) {
 		int count = 0;

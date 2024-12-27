@@ -1,8 +1,9 @@
 show tables;
 select * from user;
+select password from guestbook where id=6;
+select * from emaillist;
 
-
-select * from board;
+select * from user;
 desc board;
 
 -- BoardDao's findAll (페이징 기능 추가 필요)
