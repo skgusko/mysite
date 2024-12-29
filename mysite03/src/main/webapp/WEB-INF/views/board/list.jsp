@@ -28,21 +28,21 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>	
-					<c:forEach var="vo" items="${list}" varStatus="status">
+					<c:forEach var="vo" items="${map.list}" varStatus="status">
 						<tr>
-							<td>[${fn:length(list) - status.index}]</td>
+							<td>[${fn:length(map.list) - status.index}]</td>
 							<td style="text-align:left; padding-left:${vo.depth * 20 }px"> 	
 								<c:if test="${vo.depth > 0 }">
 									<img src="${pageContext.request.contextPath }/assets/images/reply.png">
 								</c:if>
-								<a href="${pageContext.request.contextPath }/board?a=view&id=${vo.id }&page=${currentPage }">${vo.title }</a>
+								<a href="${pageContext.request.contextPath }/board/view/${vo.id }?page=${map.currentPage }">${vo.title }</a>
 							</td>
 							<td>${vo.userName }</td>
 							<td>${vo.hit }</td>
 							<td>${vo.regDate }</td>
 							<c:choose>
 								<c:when test="${sessionScope.authUser.id == vo.userId }">
-									<td><a href="${pageContext.request.contextPath }/board?a=delete&id=${vo.id }" class="del">삭제</a></td>
+									<td><a href="${pageContext.request.contextPath }/board/delete/${vo.id }?page=${map.currentPage }" class="del">삭제</a></td>
 								</c:when>
 								<c:otherwise>
 									<td></td>
@@ -57,18 +57,18 @@
 				    <ul>
 				        <!-- 이전 페이지 그룹 -->
 				        <li>
-				            <c:if test="${prevPage > 0}">
-				                <a href="${pageContext.request.contextPath}/board?page=${prevPage}">◀</a>
+				            <c:if test="${map.prevPage > 0}">
+				                <a href="${pageContext.request.contextPath}/board?page=${map.prevPage}">◀</a>
 				            </c:if>
-				            <c:if test="${prevPage == 0}">
+				            <c:if test="${map.prevPage == 0}">
 				                <span>◀</span>
 				            </c:if>
 				        </li>
 				        <!-- 페이지 숫자 -->
-				        <c:forEach var="i" begin="${beginPage}" end="${endPage}">
+				        <c:forEach var="i" begin="${map.beginPage}" end="${map.endPage}">
 			                <c:choose>
-			                    <c:when test="${i <= pageCount}">
-			                        <li class="${i == currentPage ? 'selected' : ''}">
+			                    <c:when test="${i <= map.pageCount}">
+			                        <li class="${i == map.currentPage ? 'selected' : ''}">
 			                        	<c:choose>
 			                        		<c:when test="${empty keyword }">
 			                        			<a href="${pageContext.request.contextPath}/board?page=${i}">${i}</a>
@@ -89,10 +89,10 @@
 				
 				        <!-- 다음 페이지 그룹 -->
 				        <li>
-				            <c:if test="${nextPage > 0}">
-				                <a href="${pageContext.request.contextPath}/board?page=${nextPage}">▶</a>
+				            <c:if test="${map.nextPage > 0}">
+				                <a href="${pageContext.request.contextPath}/board?page=${map.nextPage}">▶</a>
 				            </c:if>
-				            <c:if test="${nextPage == 0}">
+				            <c:if test="${map.nextPage == 0}">
 				                <span>▶</span>
 				            </c:if>
 				        </li>
