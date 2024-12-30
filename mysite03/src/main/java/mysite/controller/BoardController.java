@@ -67,7 +67,6 @@ public class BoardController {
 					   Model model) {
 		
 		//조회수 업데이트 해야 함
-
 		BoardVo vo = boardService.getContents(boardVo.getId());
 		
 		model.addAttribute("currentPage", currentPage);
@@ -123,11 +122,19 @@ public class BoardController {
 		if (session == null || authUser == null) {
 			return "user/login";
 		}
+
+		// 이 부분 다시 확인 
+//		BoardVo vo = boardService.getContents(id, authUser.getId());
+		
+//		vo.setTitle(boardVo.getTitle());
+//		vo.setContents(boardVo.getContents());
 		
 		boardVo.setId(id);
 		
 		boardService.updateContents(boardVo);
+		
 		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("vo", boardVo);
 		
 		return "board/view/" + id;
 	}

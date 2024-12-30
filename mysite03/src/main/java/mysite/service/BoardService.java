@@ -29,13 +29,21 @@ public class BoardService {
 	}
 	
 	public BoardVo getContents(Long id) {
+		boardRepository.updateViews(id);
+		
 		BoardVo vo = boardRepository.findById(id);
 		return vo;
 	}
 	
-//	public BoardVo getContents(Long id, Long userId) { //업데이트 하기 전에, userId 가져와서 그 id만....?
-//		
-//	}
+	public BoardVo getContents(Long id, Long userId) { //업데이트 하기 전에, userId 가져와서 그 id만....?
+		BoardVo vo = boardRepository.findById(id);
+
+	    if (!vo.getUserId().equals(userId)) {
+//	        throw new UnauthorizedAccessException("이 게시글을 수정할 권한이 없습니다.");
+	    }
+		
+		return vo;
+	}
 	
 	public void updateContents(BoardVo vo) {
 		boardRepository.modify(vo);
