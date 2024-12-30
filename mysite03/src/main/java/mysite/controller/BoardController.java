@@ -93,4 +93,42 @@ public class BoardController {
 		
 		return "redirect:/board?page=" + currentPage;
 	}
+	
+	@RequestMapping(value="/modify/{id}", method=RequestMethod.GET)
+	public String modify(HttpSession session, 
+			   			 @RequestParam(value="page", required=false, defaultValue="1") Integer currentPage,
+						 @PathVariable("id") Long id,
+						 Model model) {
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		
+		if (session == null || authUser == null) {
+			return "user/login";
+		}
+		
+		BoardVo boardVo = boardService.getContents(id);
+		model.addAttribute("boardVo", boardVo);
+		model.addAttribute("currentPage", currentPage);
+		
+		return "board/modify";
+	}
+	
+	@RequestMapping(value="/modify/{id}", method=RequestMethod.POST)
+	public String modify(HttpSession session, 
+			   			 @RequestParam(value="page", required=false, defaultValue="1") Integer currentPage,
+						 @PathVariable("id") Long id,
+						 BoardVo boardVo,
+						 Model model) {
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		
+		if (session == null || authUser == null) {
+			return "user/login";
+		}
+		
+		boardVo.setId(id);
+		
+		boardService.updateContents(boardVo);
+		model.addAttribute("currentPage", currentPage);
+		
+		return "board/view/" + id;
+	}
 }

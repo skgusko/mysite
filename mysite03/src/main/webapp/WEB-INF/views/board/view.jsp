@@ -36,7 +36,7 @@
 					<a href="${pageContext.request.contextPath }/board?page=${currentPage }">글목록</a>
 					<a href="${pageContext.request.contextPath }/board?a=writeform&id=${vo.id} ">답글</a>
 					<c:if test='${sessionScope.authUser.id == vo.userId }'>
-						<a href="${pageContext.request.contextPath }/board?a=modifyform&id=${vo.id} ">글수정</a>
+						<a href="${pageContext.request.contextPath }/board/modify/${vo.id} ">글수정</a>
 					</c:if>
 				</div>
 			</div>

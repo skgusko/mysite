@@ -14,9 +14,7 @@
 		<c:import url="/WEB-INF/views/includes/header.jsp" />
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board">
-					<input type = "hidden" name = "a" value="modify">
-					<input type = "hidden" name = "id" value="${param.id }">
+				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board/modify/${param.id}?page=${currentPage}">
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글수정</th>
@@ -33,7 +31,7 @@
 						</tr>
 					</table>
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board?a=view&id=${param.id }">취소</a>
+						<a href="${pageContext.request.contextPath }/board/view/${param.id }?page=${currentPage}">취소</a>
 						<input type="submit" value="수정">
 					</div>
 				</form>				

@@ -29,7 +29,7 @@ public class BoardService {
 	}
 	
 	public BoardVo getContents(Long id) {
-		BoardVo vo = boardRepository.findForReply(id);
+		BoardVo vo = boardRepository.findById(id);
 		return vo;
 	}
 	
@@ -37,9 +37,9 @@ public class BoardService {
 //		
 //	}
 	
-//	public void updateContents(BoardVo vo) {
-//		
-//	}
+	public void updateContents(BoardVo vo) {
+		boardRepository.modify(vo);
+	}
 	
 	public void deleteContents(Long id, Long userId) {
 		BoardVo vo = boardRepository.findById(id);
