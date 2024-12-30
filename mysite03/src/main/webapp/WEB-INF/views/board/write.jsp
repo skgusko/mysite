@@ -15,10 +15,10 @@
 		<div id="content">
 			<div id="board">
 				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board/write">
-						<c:if test='${vo != null }'> 
-							<input type = "hidden" name = "g_no" value="${vo.gNo }">
-							<input type = "hidden" name = "o_no" value="${vo.oNo }">
-							<input type = "hidden" name = "depth" value="${vo.depth }">		
+						<c:if test="${vo != null}">
+							<input type = "hidden" name = "gNo" value="${vo.gNo}">
+							<input type = "hidden" name = "oNo" value="${vo.oNo}">
+							<input type = "hidden" name = "depth" value="${vo.depth}">
 						</c:if>
 					<table class="tbl-ex">
 						<tr>
@@ -28,7 +28,7 @@
 							<td class="label">제목</td>
 							<c:choose>
 								<c:when test='${vo != null}'>
-									<td><input type="text" name="title" value="RE: ${vo.title }"></td>
+									<td><input type="text" name="title" value="RE: ${vo.title}"></td>
 								</c:when>
 								<c:otherwise>
 									<td><input type="text" name="title" value=""></td>		
@@ -38,7 +38,7 @@
 						<tr>
 							<td class="label">내용</td>
 							<td>
-								<textarea id="content" name="contents"></textarea>
+								<textarea id="contents" name="contents"></textarea>
 							</td>
 						</tr>
 					</table>

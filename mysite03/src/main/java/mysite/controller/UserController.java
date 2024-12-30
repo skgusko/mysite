@@ -41,6 +41,7 @@ public class UserController {
 		return "/user/login";
 	}
 	
+	// LoginInterceptor, LogoutInterceptor로 대체
 //	@RequestMapping(value="/login", method=RequestMethod.POST)
 //	public String login(HttpSession session, UserVo userVo, Model model) {
 //		UserVo authUser = userService.getUser(userVo.getEmail(), userVo.getPassword()); 

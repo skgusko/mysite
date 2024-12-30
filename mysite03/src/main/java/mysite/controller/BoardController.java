@@ -36,10 +36,9 @@ public class BoardController {
 	@RequestMapping(value="/write", method=RequestMethod.GET)
 	public String write(@RequestParam(value="id", required=false) Long id,
 						Model model) {
-		
 		if (id != null) { //답글쓰기인 경우 
 			BoardVo vo = boardService.getContents(id); //부모글
-			model.addAttribute(vo);
+			model.addAttribute("vo", vo);
 		}
 		
 		return "board/write";
@@ -56,18 +55,15 @@ public class BoardController {
 		
 		boardService.addContents(vo);
 		
-		
 		return "redirect:/board";
 	}
 	
 	@RequestMapping("/view/{id}")
 	public String view(@PathVariable("id") Long id,
 					   @RequestParam(value="page", required=false, defaultValue="1") Integer currentPage,
-					  BoardVo boardVo,
 					   Model model) {
 		
-		//조회수 업데이트 해야 함
-		BoardVo vo = boardService.getContents(boardVo.getId());
+		BoardVo vo = boardService.getContents(id);
 		
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("vo", vo);
@@ -115,27 +111,20 @@ public class BoardController {
 	public String modify(HttpSession session, 
 			   			 @RequestParam(value="page", required=false, defaultValue="1") Integer currentPage,
 						 @PathVariable("id") Long id,
-						 BoardVo boardVo,
-						 Model model) {
+						 BoardVo boardVo) {
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		
 		if (session == null || authUser == null) {
 			return "user/login";
 		}
-
-		// 이 부분 다시 확인 
-//		BoardVo vo = boardService.getContents(id, authUser.getId());
 		
-//		vo.setTitle(boardVo.getTitle());
-//		vo.setContents(boardVo.getContents());
+		BoardVo vo = boardService.getContents(id, authUser.getId());
 		
-		boardVo.setId(id);
+		vo.setTitle(boardVo.getTitle());
+		vo.setContents(boardVo.getContents());
 		
 		boardService.updateContents(boardVo);
 		
-		model.addAttribute("currentPage", currentPage);
-		model.addAttribute("vo", boardVo);
-		
-		return "board/view/" + id;
+		return "redirect:/board/view/" + id + "?page=" + currentPage;
 	}
 }

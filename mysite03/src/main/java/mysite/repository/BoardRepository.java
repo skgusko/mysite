@@ -14,6 +14,7 @@ import mysite.vo.BoardVo;
 
 @Repository
 public class BoardRepository {
+	
 	public List<BoardVo> findBoard(int startIndex, int countPerPage) {
 		List<BoardVo> result = new ArrayList<BoardVo>();
 		
@@ -57,7 +58,6 @@ public class BoardRepository {
 		}
 		return result;
 	}
-	
 
 	public BoardVo findById(Long id) {
 		BoardVo boardVo = null;
@@ -85,6 +85,38 @@ public class BoardRepository {
 				boardVo.setgNo(gNo);
 				boardVo.setoNo(oNo);
 				boardVo.setDepth(depth);
+				boardVo.setUserId(userId);
+			}
+			
+			rs.close();
+			
+		} catch (SQLException e) {
+			System.out.println("error: " + e);
+		}
+		
+		return boardVo;
+	}
+
+	public BoardVo findByIdAndUserId(Long id, Long userId) {
+		BoardVo boardVo = null;
+		
+		try (
+				Connection conn = getConnection();
+				PreparedStatement pstmt = conn.prepareStatement("select title, contents from board where id=? and user_id=?");
+		) {
+			pstmt.setLong(1, id);
+			pstmt.setLong(2, userId);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				String title = rs.getString(1);
+				String contents = rs.getString(2);
+				
+				boardVo = new BoardVo();
+				boardVo.setId(id);
+				boardVo.setTitle(title);
+				boardVo.setContents(contents);
 				boardVo.setUserId(userId);
 			}
 			
@@ -158,6 +190,7 @@ public class BoardRepository {
 		return count;
 	}
 
+	/*
 	public BoardVo findForReply(Long id) {
 		BoardVo boardVo = null;
 		
@@ -189,8 +222,9 @@ public class BoardRepository {
 		}
 		return boardVo;
 	}
+	*/
 
-	public int updateOrderNo(int gNo, int oNo, int depth) {
+	public int updateOrderNo(int gNo, int oNo) {
 		int count = 0;
 		
 		try (
@@ -260,22 +294,6 @@ public class BoardRepository {
 		}
 		return count;
 	}
-
-
-	private Connection getConnection() throws SQLException{
-		Connection conn = null;
-		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			
-			String url = "jdbc:mariadb://192.168.56.5:3306/webdb";
-			conn = DriverManager.getConnection(url, "webdb", "webdb");
-			
-		} catch (ClassNotFoundException e) { 
-			System.out.println("드라이버 로딩 실패: " + e);
-		} 
-		return conn;
-	}
-
 
 	public int getCountByKwd(String keyword) {
 		int result = 0;
@@ -349,5 +367,19 @@ public class BoardRepository {
 			System.out.println("error: " + e);
 		}
 		return result;
+	}
+	
+	private Connection getConnection() throws SQLException{
+		Connection conn = null;
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");
+			
+			String url = "jdbc:mariadb://192.168.56.5:3306/webdb";
+			conn = DriverManager.getConnection(url, "webdb", "webdb");
+			
+		} catch (ClassNotFoundException e) { 
+			System.out.println("드라이버 로딩 실패: " + e);
+		} 
+		return conn;
 	}
 }

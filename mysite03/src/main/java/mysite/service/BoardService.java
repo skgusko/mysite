@@ -18,12 +18,16 @@ public class BoardService {
 	}
 	
 	public void addContents(BoardVo vo) {
-		if (vo.getgNo() == 0) { // 새글쓰기 
+		if (vo.getgNo() == 0) { // 새글쓰기
 			vo.setgNo(boardRepository.getNextGroupNo()); 
 			vo.setoNo(1);
 			vo.setDepth(0); 
 		} else { //답글
-			boardRepository.updateOrderNo(vo.getgNo(), vo.getoNo(), vo.getDepth());
+			// 기존 글의 o_no 값 증가
+			boardRepository.updateOrderNo(vo.getgNo(), vo.getoNo());
+			
+			vo.setoNo(vo.getoNo() + 1);
+			vo.setDepth(vo.getDepth() + 1);
 		}
 		boardRepository.write(vo);
 	}
@@ -31,18 +35,11 @@ public class BoardService {
 	public BoardVo getContents(Long id) {
 		boardRepository.updateViews(id);
 		
-		BoardVo vo = boardRepository.findById(id);
-		return vo;
+		return boardRepository.findById(id);
 	}
 	
-	public BoardVo getContents(Long id, Long userId) { //업데이트 하기 전에, userId 가져와서 그 id만....?
-		BoardVo vo = boardRepository.findById(id);
-
-	    if (!vo.getUserId().equals(userId)) {
-//	        throw new UnauthorizedAccessException("이 게시글을 수정할 권한이 없습니다.");
-	    }
-		
-		return vo;
+	public BoardVo getContents(Long id, Long userId) { 
+		return boardRepository.findByIdAndUserId(id, userId);
 	}
 	
 	public void updateContents(BoardVo vo) {

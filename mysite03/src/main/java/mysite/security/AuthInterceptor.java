@@ -40,7 +40,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 		HttpSession session = request.getSession();
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		
-		if (authUser == null) {
+		if (authUser == null) { //로그인 안 되어있는 경우 (인증되지 않은 유저의 접근)
 			response.sendRedirect(request.getContextPath() + "/user/login");
 			return false;
 		}
