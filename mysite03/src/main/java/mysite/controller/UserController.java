@@ -26,7 +26,9 @@ public class UserController {
 	
 	@RequestMapping(value="/join", method=RequestMethod.POST)
 	public String join(UserVo userVo) {
-		 userService.join(userVo);
+		System.out.println(userVo); //여기엔 id가 없음
+		userService.join(userVo);
+		System.out.println(userVo); //여기에 id가 있게 mybatis에서 설정 
 		
 		return "redirect:/user/joinsuccess";
 	}

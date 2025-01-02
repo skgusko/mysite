@@ -28,7 +28,9 @@ public class AuthInterceptor implements HandlerInterceptor {
 		
 		// 4. Handler Method에서 @Auth가 없으면 '클래스(타입)'에 @Auth 가져오기  (어노테이션 Target 중 TYPE)
 		if (auth == null) {
-			auth = handlerMethod.getBeanType().getAnnotation(Auth.class);
+			auth = handlerMethod
+					.getBeanType()
+					.getAnnotation(Auth.class);
 		}
 		
 		// 5. @Auth 어노테이션이 없는 경우 (Target이 METHOD, TYPE인 어노테이션이 둘 다 없는 경우)
@@ -46,10 +48,10 @@ public class AuthInterceptor implements HandlerInterceptor {
 		}
 		
 		// 7. ADMIN 요청에 대한 권한 확인
-		String requiredRole = auth.role(); // 어노테이션에 정의된 권한
+		String role = auth.role(); // 어노테이션에 정의된 권한
 		String userRole = authUser.getRole(); // 세션에 저장된 유저의 role
 
-		if ("ADMIN".equals(requiredRole)) {
+		if ("ADMIN".equals(role)) {
 		    if (!"ADMIN".equals(userRole)) { // USER인 경우
 		        response.sendRedirect(request.getContextPath());
 		        return false;

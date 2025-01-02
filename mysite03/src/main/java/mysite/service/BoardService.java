@@ -29,7 +29,7 @@ public class BoardService {
 			vo.setoNo(vo.getoNo() + 1);
 			vo.setDepth(vo.getDepth() + 1);
 		}
-		boardRepository.write(vo);
+		boardRepository.insert(vo);
 	}
 	
 	public BoardVo getContents(Long id) {
@@ -63,7 +63,7 @@ public class BoardService {
 		final int PAGE_GROUP_COUNT = 5; // 한 번에 보여줄 페이지 수 (1,2,3,4,5)
 		
 		// 게시글 총 개수  
-		int boardTotalCount = boardRepository.getBoardTotalCount();
+		int boardTotalCount = boardRepository.totalCount();
 		
 		// 총 페이지 수 계산
 		int pageCount = (int) Math.ceil((double) boardTotalCount / COUNT_PER_PAGE);

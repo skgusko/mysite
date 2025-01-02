@@ -1,13 +1,16 @@
 package mysite.repository;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import mysite.vo.BoardVo;
@@ -15,11 +18,95 @@ import mysite.vo.BoardVo;
 @Repository
 public class BoardRepository {
 	
+	@Autowired
+	private DataSource dataSource;
+	private SqlSession sqlSession;
+	
+	public BoardRepository(SqlSession sqlSession) {
+		this.sqlSession = sqlSession;
+	}
+	
+	public int totalCount() {
+		return sqlSession.insert("board.totalCount");
+	}
+	
+	public int totalCount(String keyword) {
+		return sqlSession.insert("board.totalCount", keyword);
+		
+//		int result = 0;
+//		
+//		try (
+//				Connection conn = dataSource.getConnection();
+//				PreparedStatement pstmt = conn.prepareStatement("select count(*) from board");
+//		) {
+//			ResultSet rs = pstmt.executeQuery();
+//			
+//			if (rs.next()) {
+//				result = rs.getInt(1);
+//			}
+//			rs.close();
+//		} catch (SQLException e) {
+//			System.out.println("error: " + e);
+//		}
+//		return result;
+	}
+
+//	public int getCountByKwd(String keyword) {
+//		int result = 0;
+//		
+//		try (
+//				Connection conn = dataSource.getConnection();
+//				PreparedStatement pstmt = conn.prepareStatement("select count(*) from board where title like ? or contents like ?");
+//		) {
+//			String searchKeyword = "%" + keyword + "%";
+//			
+//			pstmt.setString(1, searchKeyword); 
+//			pstmt.setString(2, searchKeyword); 
+//			
+//			ResultSet rs = pstmt.executeQuery();
+//			
+//			if (rs.next()) {
+//				result = rs.getInt(1);
+//			}
+//			rs.close();
+//		} catch (SQLException e) {
+//			System.out.println("error: " + e);
+//		}
+//		return result;
+//	}
+	
+	//
+
+	public int insert(BoardVo vo) {
+		int count = 0;
+		
+		try (
+				Connection conn = dataSource.getConnection();	
+				PreparedStatement pstmt = conn.prepareStatement("insert into board values(null, ?, ?, ?, now(), ?, ?, ?, ?)");
+		) {
+			pstmt.setString(1, vo.getTitle()); 
+			pstmt.setString(2, vo.getContents());
+			pstmt.setInt(3, vo.getHit()); //hit
+			pstmt.setInt(4, vo.getgNo()); //g_no : max
+			pstmt.setInt(5, vo.getoNo()); //o_no
+			pstmt.setInt(6, vo.getDepth()); //depth
+			pstmt.setLong(7, vo.getUserId());
+			
+			count = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("error: " + e);
+		}
+		
+		return count;
+		
+	}
+	
 	public List<BoardVo> findBoard(int startIndex, int countPerPage) {
 		List<BoardVo> result = new ArrayList<BoardVo>();
 		
 		try (
-				Connection conn = getConnection();
+				Connection conn = dataSource.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(
 						"select b.id, b.title, u.name, b.hit, date_format(b.reg_date, '%Y-%m-%d %h:%i:%s'), b.depth, u.id" +
 						"  from board b join user u" +
@@ -63,7 +150,7 @@ public class BoardRepository {
 		BoardVo boardVo = null;
 		
 		try (
-				Connection conn = getConnection();
+				Connection conn = dataSource.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("select title, contents, g_no, o_no, depth, user_id from board where id=?");
 		) {
 			pstmt.setLong(1, id); 
@@ -101,7 +188,7 @@ public class BoardRepository {
 		BoardVo boardVo = null;
 		
 		try (
-				Connection conn = getConnection();
+				Connection conn = dataSource.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("select title, contents from board where id=? and user_id=?");
 		) {
 			pstmt.setLong(1, id);
@@ -129,36 +216,12 @@ public class BoardRepository {
 		return boardVo;
 	}
 
-	public int write(BoardVo vo) {
-		int count = 0;
-		
-		try (
-				Connection conn = getConnection();	
-				PreparedStatement pstmt = conn.prepareStatement("insert into board values(null, ?, ?, ?, now(), ?, ?, ?, ?)");
-		) {
-			pstmt.setString(1, vo.getTitle()); 
-			pstmt.setString(2, vo.getContents());
-			pstmt.setInt(3, vo.getHit()); //hit
-			pstmt.setInt(4, vo.getgNo()); //g_no : max
-			pstmt.setInt(5, vo.getoNo()); //o_no
-			pstmt.setInt(6, vo.getDepth()); //depth
-			pstmt.setLong(7, vo.getUserId());
-			
-			count = pstmt.executeUpdate();
-			
-		} catch (SQLException e) {
-			System.out.println("error: " + e);
-		}
-		
-		return count;
-		
-	}
 
 	public int getNextGroupNo() {
 		int maxgNo = 0;
 		
 		try (
-				Connection conn = getConnection();
+				Connection conn = dataSource.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("select max(g_no) from board");
 				ResultSet rs = pstmt.executeQuery();
 		) {
@@ -176,7 +239,7 @@ public class BoardRepository {
 		int count = 0;
 		
 		try (
-				Connection conn = getConnection();
+				Connection conn = dataSource.getConnection();
 				PreparedStatement pstmt1 = conn.prepareStatement("update board set title=?, contents=? where id=?");
 		) {
 				pstmt1.setString(1, vo.getTitle()); 
@@ -190,45 +253,11 @@ public class BoardRepository {
 		return count;
 	}
 
-	/*
-	public BoardVo findForReply(Long id) {
-		BoardVo boardVo = null;
-		
-		try (
-				Connection conn = getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("select g_no, o_no, depth, title, contents from board where id=?");
-		) {
-			pstmt.setLong(1, id); 
-			
-			ResultSet rs = pstmt.executeQuery();
-			
-			if (rs.next()) {
-				int gNo = rs.getInt(1);
-				int oNo = rs.getInt(2);
-				int depth = rs.getInt(3);
-				String title = rs.getString(4);
-				String contents = rs.getString(5);
-				
-				boardVo = new BoardVo();
-				boardVo.setgNo(gNo);
-				boardVo.setoNo(oNo);
-				boardVo.setDepth(depth);
-				boardVo.setTitle(title);
-				boardVo.setContents(contents);
-			}
-			rs.close();
-		} catch (SQLException e) {
-			System.out.println("error: " + e);
-		}
-		return boardVo;
-	}
-	*/
-
 	public int updateOrderNo(int gNo, int oNo) {
 		int count = 0;
 		
 		try (
-				Connection conn = getConnection();
+				Connection conn = dataSource.getConnection();
 				PreparedStatement pstmt1 = conn.prepareStatement("update board set o_no=o_no+1 where g_no=? and o_no>=?+1");
 		) {
 				pstmt1.setInt(1, gNo);
@@ -245,7 +274,7 @@ public class BoardRepository {
 		int count = 0;
 		
 		try (
-				Connection conn = getConnection();
+				Connection conn = dataSource.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement("delete from board where id=?");
 		) {
 			pstmt.setLong(1, id);
@@ -259,31 +288,14 @@ public class BoardRepository {
 		return count;
 	}
 
-	public int getBoardTotalCount() {
-		int result = 0;
-		
-		try (
-				Connection conn = getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("select count(*) from board");
-		) {
-			ResultSet rs = pstmt.executeQuery();
-			
-			if (rs.next()) {
-				result = rs.getInt(1);
-			}
-			rs.close();
-		} catch (SQLException e) {
-			System.out.println("error: " + e);
-		}
-		return result;
-	}
+	
 
 
 	public int updateViews(Long id) {
 		int count = 0;
 		
 		try (
-				Connection conn = getConnection();
+				Connection conn = dataSource.getConnection();
 				PreparedStatement pstmt1 = conn.prepareStatement("update board set hit=hit+1 where id=?");
 		) {
 				pstmt1.setLong(1, id); 
@@ -295,36 +307,13 @@ public class BoardRepository {
 		return count;
 	}
 
-	public int getCountByKwd(String keyword) {
-		int result = 0;
-		
-		try (
-				Connection conn = getConnection();
-				PreparedStatement pstmt = conn.prepareStatement("select count(*) from board where title like ? or contents like ?");
-		) {
-			String searchKeyword = "%" + keyword + "%";
-			
-			pstmt.setString(1, searchKeyword); 
-			pstmt.setString(2, searchKeyword); 
-			
-			ResultSet rs = pstmt.executeQuery();
-			
-			if (rs.next()) {
-				result = rs.getInt(1);
-			}
-			rs.close();
-		} catch (SQLException e) {
-			System.out.println("error: " + e);
-		}
-		return result;
-	}
 
 
 	public List<BoardVo> findBoardByKwd(String keyword, int startIndex, int countPerPage) {
 		List<BoardVo> result = new ArrayList<BoardVo>();
 		
 		try (
-				Connection conn = getConnection();
+				Connection conn = dataSource.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(
 						"select b.id, b.title, u.name, b.hit, date_format(b.reg_date, '%Y-%m-%d %h:%i:%s'), b.depth, u.id" +
 						"  from board b join user u" +
@@ -367,19 +356,5 @@ public class BoardRepository {
 			System.out.println("error: " + e);
 		}
 		return result;
-	}
-	
-	private Connection getConnection() throws SQLException{
-		Connection conn = null;
-		try {
-			Class.forName("org.mariadb.jdbc.Driver");
-			
-			String url = "jdbc:mariadb://192.168.56.5:3306/webdb";
-			conn = DriverManager.getConnection(url, "webdb", "webdb");
-			
-		} catch (ClassNotFoundException e) { 
-			System.out.println("드라이버 로딩 실패: " + e);
-		} 
-		return conn;
 	}
 }
