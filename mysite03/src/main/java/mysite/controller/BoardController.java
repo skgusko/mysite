@@ -23,7 +23,7 @@ public class BoardController {
 		this.boardService = boardService;
 	}
 	
-	@RequestMapping({"", "/"})
+	@RequestMapping({"", "/", "/search"})
 	public String main(@RequestParam(value="page", required=false, defaultValue="1") Integer currentPage, 
 					   @RequestParam(value="kwd", required=false) String keyword,
 					   Model model) {

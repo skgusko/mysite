@@ -18,4 +18,132 @@
 			</otherwise>
 		</choose>	
 	</select>
+	
+	<select id="findAllByPageAndKeword" parameterType="map" resultType="boardvo">
+		<choose>
+			<when test="keyword == null or keyword == ''">
+				<![CDATA[
+				  select a.id,
+				  		 a.title,
+				  		 a.hit,
+				  		 date_format(a.reg_date, '%Y-%m-%d %p %h:%i:%s') as regDate,
+				  		 a.depth,
+				  		 b.name as userName,
+				  		 a.user_id as userId
+					from board a, user b
+				   where a.user_id = b.id
+				order by g_no desc, o_no asc
+				   limit #{startIndex }, #{size }				
+				]]>
+			</when>
+			<otherwise>
+				<![CDATA[
+				  select a.id,
+				  		 a.title,
+				  		 a.hit,
+				  		 date_format(a.reg_date, '%Y-%m-%d %p %h:%i:%s') as regDate,
+				  		 a.depth,
+				  		 b.name as userName,
+				  		 a.user_id as userId
+				  	from board a, user b
+				   where a.user_id = b.id
+				     and (title like '%${keyword }%' or contents like '%${keyword }%')
+				order by g_no desc, o_no asc
+				   limit #{startIndex }, #{size }				
+				]]>			
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert" parameterType="boardvo">
+		<choose>
+			<when test="gNo == 0">
+				<![CDATA[
+				insert
+				  into board
+				values (null,
+						#{title },
+						#{contents },
+						0,
+						now(),
+						(select ifnull(max(g_no), 0) + 1 from board a ),
+						1,
+						0,
+						#{userId })
+				]]>
+			</when>
+			<otherwise>
+				<![CDATA[
+				insert
+				  into board
+				values (null,
+						#{title },
+						#{contents },
+						0,
+						now(),
+						#{gNo },
+						#{oNo },
+						#{depth },
+						#{userId })				
+				]]>
+			</otherwise>
+		</choose>
+	</insert>
+	
+	<select id="findById" parameterType="long" resultType="boardvo">
+		<![CDATA[
+		select title,
+			   contents, 
+			   g_no as gNo, 
+			   o_no as oNo, 
+			   depth, 
+			   user_id as userId 
+		  from board 
+		 where id=#{id}
+		]]>
+	</select>
+	
+	<select id="findByIdAndUserId" parameterType="map" resultType="boardvo">
+		<![CDATA[
+		select title,
+			   contents
+		  from board 
+		 where id=#{id}
+		 and user_id=#{userId}
+		]]>
+	</select>
+	
+	<delete id="deleteById" parameterType="long">
+		<![CDATA[
+		delete 
+		from board 
+		where id=#{id}
+		]]>
+	</delete>
+	
+	<update id="update" parameterType="long">
+		<![CDATA[
+		update board 
+		set hit=hit+1
+		where id=#{id}
+		]]>
+	</update>
+	
+	<update id="modify" parameterType="boardvo">
+		<![CDATA[
+		update board 
+		set title=#{title}, 
+			contents=#{contents} 
+		where id=#{id}
+		]]>
+	</update>
+	
+	<update id="updateOrderNo" parameterType="map">
+		<![CDATA[
+		update board 
+		set o_no=o_no+1 
+		where g_no=#{gNo}
+		and o_no>=#{oNo}
+		]]>
+	</update>
 </mapper>

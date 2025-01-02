@@ -70,11 +70,11 @@
 			                    <c:when test="${i <= map.pageCount}">
 			                        <li class="${i == map.currentPage ? 'selected' : ''}">
 			                        	<c:choose>
-			                        		<c:when test="${empty keyword }">
+			                        		<c:when test="${empty map.keyword }">
 			                        			<a href="${pageContext.request.contextPath}/board?page=${i}">${i}</a>
 			                        		</c:when>
 			                        		<c:otherwise>
-												<a href="${pageContext.request.contextPath}/board?a=search&page=${i}&kwd=${keyword}">${i}</a>			                        		
+												<a href="${pageContext.request.contextPath}/board?a=search&page=${i}&kwd=${map.keyword}">${i}</a>			                        		
 			                        		</c:otherwise>
 			                        	</c:choose>
 		                        	</li>

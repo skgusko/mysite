@@ -18,8 +18,7 @@ public class UserService {
 	}
 
 	public UserVo getUser(Long id) {
-		UserVo vo = userRepository.findById(id);
-		return vo;
+		return userRepository.findById(id);
 	}
 	
 	public UserVo getUser(String email, String gpassword) {

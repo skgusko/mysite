@@ -18,17 +18,13 @@ public class BoardService {
 	}
 	
 	public void addContents(BoardVo vo) {
-		if (vo.getgNo() == 0) { // 새글쓰기
-			vo.setgNo(boardRepository.getNextGroupNo()); 
-			vo.setoNo(1);
-			vo.setDepth(0); 
-		} else { //답글
-			// 기존 글의 o_no 값 증가
-			boardRepository.updateOrderNo(vo.getgNo(), vo.getoNo());
+		if (vo.getgNo() != 0) { //답글 
+			boardRepository.updateOrderNo(vo.getgNo(), vo.getoNo() + 1);
 			
 			vo.setoNo(vo.getoNo() + 1);
 			vo.setDepth(vo.getDepth() + 1);
 		}
+		
 		boardRepository.insert(vo);
 	}
 	
@@ -63,7 +59,7 @@ public class BoardService {
 		final int PAGE_GROUP_COUNT = 5; // 한 번에 보여줄 페이지 수 (1,2,3,4,5)
 		
 		// 게시글 총 개수  
-		int boardTotalCount = boardRepository.totalCount();
+		int boardTotalCount = boardRepository.totalCount(keyword);
 		
 		// 총 페이지 수 계산
 		int pageCount = (int) Math.ceil((double) boardTotalCount / COUNT_PER_PAGE);
@@ -80,8 +76,7 @@ public class BoardService {
 		int startIndex = (currentPage - 1) * COUNT_PER_PAGE;
 		
 		// 게시글 가져오기
-		List<BoardVo> list = boardRepository.findBoard(startIndex, COUNT_PER_PAGE);
-		
+		List<BoardVo> list = boardRepository.findAllByPageAndKeword(startIndex, COUNT_PER_PAGE, keyword);
 		
 		map.put("list", list);
 		map.put("currentPage", currentPage);
@@ -90,6 +85,7 @@ public class BoardService {
 		map.put("endPage", endPage);
 		map.put("prevPage", prevPage);
 		map.put("nextPage", nextPage);
+		map.put("keyword", keyword);
 		
 		return map;
 	}

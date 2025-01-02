@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	public String handler(Model model, Exception e) {
 		//1. 로깅(logging)
-		StringWriter errors = new StringWriter();
+		StringWriter errors = new StringWriter(); // 콘솔 출력값을 프로그램 내에서 다루기 위해 사용 
 		e.printStackTrace(new PrintWriter(errors)); //writer쪽에 넣어주면 콘솔이 아닌 outputStream으로 보냄. 메모리 버퍼에 빨때 꽂는 거. PrintWriter은 보조스트림
 		log.error(errors.toString());
 		
