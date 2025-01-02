@@ -9,9 +9,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>Exception Handler: Spring Controller</h1>
-	<p>
-		장애가 발생했습니다.
-	</p>
+<h1>Exception Handler: Spring Controller</h1>
+<pre style="color:#f00">
+${errors }
+</pre>
 </body>
 </html>
