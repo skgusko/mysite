@@ -11,6 +11,9 @@
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 	
+	<!-- mvc url-resource mapping -->
+	<mvc:resources mapping="/assets/upload-images/**" location="file:/Users/ko/mysite-uploads" />
+	
 	<!-- Validator, ConversionService, MessageConverter를 자동으로 등록 -->
 	<mvc:annotation-driven>
 		<!-- Argument Resolvers -->
