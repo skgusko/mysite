@@ -12,18 +12,9 @@ import mysite.vo.UserVo;
 
 public class AuthInterceptor implements HandlerInterceptor {
 
-	private final SiteService siteService;
-	public AuthInterceptor(SiteService siteService) {
-		this.siteService = siteService;
-	}
-	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		//title 출력 
-		HttpSession session = request.getSession();
-		SiteVo siteVo = siteService.getSite();
-		session.setAttribute("title", siteVo.getTitle());
 		
 		// 1. Handler 종류 확인 (보안처리 대상이 아닌 경우)
 		if (!(handler instanceof HandlerMethod)) { 
@@ -51,7 +42,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 		}
 
 		// 6. @Auth가 붙어 있기 때문에 인증(Authentication) 여부 확인 
-//		HttpSession session = request.getSession();
+		HttpSession session = request.getSession();
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 
 		if (authUser == null) { //로그인 안 되어있는 경우 (인증되지 않은 유저의 접근)
