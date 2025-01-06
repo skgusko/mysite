@@ -5,7 +5,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import mysite.service.SiteService;
 import mysite.service.UserService;
+import mysite.vo.SiteVo;
 import mysite.vo.UserVo;
 
 public class LoginInterceptor implements HandlerInterceptor {

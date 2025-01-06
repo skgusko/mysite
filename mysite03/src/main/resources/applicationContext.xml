@@ -31,8 +31,9 @@
 		<constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
 
-	<context:annotation-config />
+	
 
+	<context:annotation-config />
 	<context:component-scan base-package="mysite.service, mysite.repository">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
