@@ -25,7 +25,7 @@ public class SiteInterceptor implements HandlerInterceptor {
 		
 		if (siteVo == null) {
 			siteVo = siteService.getSite();
-			request.setAttribute("siteVo", siteVo);
+			request.getServletContext().setAttribute("siteVo", siteVo);
 		}
 		
 		// locale
