@@ -1,24 +1,19 @@
 package mysite.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import jakarta.servlet.http.HttpServletRequest;
-import mysite.service.SiteService;
-
 @Controller
 public class MainController {
 	
-	private final SiteService siteService;
-	
-	public MainController(SiteService siteService) {
-		this.siteService = siteService;
-	}
+	@Autowired
+	ApplicationContext applicationContext;
 	
 	@RequestMapping({"/", "/main"})
-	public String index(Model model, HttpServletRequest request) {
-		model.addAttribute("siteVo", siteService.getSite());
+	public String index(Model model) {
 		return "main/index";
 	}
 }
