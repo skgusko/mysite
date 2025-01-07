@@ -11,6 +11,7 @@
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
         http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+	<aop:aspectj-autoproxy/>
 
 	<!-- Connection Pool DataSource-->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
@@ -34,7 +35,7 @@
 	
 
 	<context:annotation-config />
-	<context:component-scan base-package="mysite.service, mysite.repository">
+	<context:component-scan base-package="mysite.service, mysite.repository, mysite.aspect">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component" />			

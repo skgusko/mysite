@@ -12,7 +12,7 @@ public class GuestbookService {
 	
 	private GuestbookRepository guestbookRepository;
 	
-	private GuestbookService(GuestbookRepository guestbookRepository) {
+	public GuestbookService(GuestbookRepository guestbookRepository) {
 		this.guestbookRepository = guestbookRepository;
 	}
 	

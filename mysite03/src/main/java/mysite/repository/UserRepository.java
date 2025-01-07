@@ -21,18 +21,7 @@ public class UserRepository {
 	}
 
 	public UserVo findByEmailAndPassword(String email, String password) {
-		// AOP로 변경 예정 
-		StopWatch sw = new StopWatch();
-		sw.start();
-		
-		UserVo userVo = sqlSession.selectOne("user.findByEmailAndPassword", Map.of("email", email, "password", password)); //결과값 한 줄이어야 함
-		
-		sw.stop();
-		
-		long totalTime = sw.getTotalTimeMillis();
-		System.out.println("[Execution Time][UserRepository.findByEmailAndPassword]" + totalTime + "ms");
-		
-		return userVo;
+		return sqlSession.selectOne("user.findByEmailAndPassword", Map.of("email", email, "password", password)); //결과값 한 줄이어야 함
 	}
 
 	public UserVo findById(Long userId) {

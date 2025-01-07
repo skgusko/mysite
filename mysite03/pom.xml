@@ -32,6 +32,20 @@
 			</exclusions>
 		</dependency>
 		
+		<!-- hibernate validator -->
+		<dependency>
+		   <groupId>org.hibernate</groupId>
+		   <artifactId>hibernate-validator</artifactId>
+		   <version>8.0.0.Final</version>
+		</dependency>	
+		
+		<!-- Spring Aspect -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		
 		<!-- Spring jdbc -->
 		<dependency>
 			<groupId>org.springframework</groupId>
