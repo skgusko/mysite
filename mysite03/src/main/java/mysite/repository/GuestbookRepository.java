@@ -17,6 +17,10 @@ public class GuestbookRepository {
 	public GuestbookRepository(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
 	}
+	
+	public GuestbookVo findById(Long id) {
+		return sqlSession.selectOne("guestbook.findById", id);
+	}
 
 	public List<GuestbookVo> findAll() {
 		return sqlSession.selectList("guestbook.findAll");
@@ -29,22 +33,4 @@ public class GuestbookRepository {
 	public int deleteByIdAndPassword(Long id, String password) {
 		return sqlSession.delete("guestbook.deleteByIdAndPassword", Map.of("id", id, "password", password));
 	}
-
-//	public String findPasswordById(Long id) {
-//		String result = "";
-//		
-//		try (
-//				Connection conn = dataSource.getConnection();
-//				PreparedStatement pstmt = conn.prepareStatement("select password from guestbook where id=?");
-//				ResultSet rs = pstmt.executeQuery();
-//		)
-//		{
-//			if(rs.next()) {
-//				result = rs.getString(1);
-//			}
-//		} catch (SQLException e) {
-//			System.out.println("error: " + e);
-//		}
-//		return result;
-//	}
 }

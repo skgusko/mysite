@@ -16,10 +16,10 @@ public class GuestbookLogRepository {
 	}
 	
 	public int update() {
-		return sqlSession.update("guestbook-log.insert");
+		return sqlSession.update("guestbook-log.update");
 	}
 	
 	public int updateByRegDate(String regDate) {
-		return sqlSession.update("guestbook-log.updateByRegDate");
+		return sqlSession.update("guestbook-log.updateByRegDate", regDate);
 	}
 }
