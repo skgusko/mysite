@@ -21,11 +21,16 @@ public class UserService {
 		return userRepository.findById(id);
 	}
 	
-	public UserVo getUser(String email, String gpassword) {
-		return userRepository.findByEmailAndPassword(email, gpassword);
+	public UserVo getUser(String email, String password) {
+		return userRepository.findByEmailAndPassword(email, password);
 	}
 
+	public UserVo getUser(String email) {
+		return userRepository.findByEmail(email);
+	}
+	
 	public void update(UserVo userVo) {
 		userRepository.update(userVo);
 	}
+
 }
