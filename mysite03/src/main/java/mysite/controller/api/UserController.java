@@ -24,7 +24,6 @@ public class UserController {
 	@GetMapping("/checkemail")
 	public JsonResult checkEmail(@RequestParam(value="email", required=true, defaultValue="") String email) {
 		UserVo userVo = userService.getUser(email);
-		
 		return JsonResult.success(Map.of("exist", userVo != null));
 	}
 }

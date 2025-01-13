@@ -18,12 +18,12 @@
 	</properties>
 
 	<dependencies>
-		<!-- Spring MVC -->
+		<!-- spring mvc -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
-			<!-- JCL excluded -->
+			<!-- jcl excluded -->
 			<exclusions>
 			   <exclusion>
 				  <groupId>org.springframework</groupId>
