@@ -1,21 +1,17 @@
 package mysite.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import mysite.service.SiteService;
 import mysite.service.UserService;
-import mysite.vo.SiteVo;
 import mysite.vo.UserVo;
 
 public class LoginInterceptor implements HandlerInterceptor {
+	@Autowired
 	private UserService userService;
-
-	public LoginInterceptor(UserService userService) {
-		this.userService = userService;
-	}
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
