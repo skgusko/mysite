@@ -8,11 +8,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import mysite.config.app.DBConfig;
 import mysite.config.app.MyBatisConfig;
+import mysite.config.app.SecurityConfig;
 
 @Configuration 					// 이 클래스는 설정 클래스임
 @EnableAspectJAutoProxy 		// AOP 기능 활성화
 @EnableTransactionManagement	// 트랜잭션 관리 활성화
-@Import({DBConfig.class, MyBatisConfig.class}) // 데이터베이스와 MyBatis 설정 포함
+@Import({DBConfig.class, MyBatisConfig.class, SecurityConfig.class}) // 데이터베이스와 MyBatis 설정 포함
 @ComponentScan(basePackages= {"mysite.service", "mysite.repository", "mysite.aspect"}) // 지정된 패키지에서 Bean을 자동으로 스캔하고 등록
 public class AppConfig {
 

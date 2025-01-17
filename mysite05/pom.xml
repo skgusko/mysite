@@ -15,6 +15,7 @@
 		<org.springframework-version>6.2.1</org.springframework-version>
 		<jcloverslf4j.version>1.7.36</jcloverslf4j.version>		
     	<logback.version>1.2.11</logback.version>
+        <org.springsecurity-version>6.4.2</org.springsecurity-version>
 	</properties>
 
 	<dependencies>
@@ -52,6 +53,27 @@
 		    <artifactId>jackson-databind</artifactId>
 		    <version>2.18.1</version>
 		</dependency>
+		
+        <!-- spring security web -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${org.springsecurity-version}</version>
+        </dependency>
+
+        <!-- spring security config -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${org.springsecurity-version}</version>
+        </dependency>
+        
+        <!-- spring security config -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${org.springsecurity-version}</version>
+        </dependency>
 		
 		<!-- Spring jdbc -->
 		<dependency>
