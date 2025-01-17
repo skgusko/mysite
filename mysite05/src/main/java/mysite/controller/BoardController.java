@@ -2,6 +2,7 @@ package mysite.controller;
 
 import java.util.Map;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -84,8 +85,6 @@ public class BoardController {
 		}
 		
 		boardService.deleteContents(id, authUser.getId());
-		
-		
 		return "redirect:/board?page=" + currentPage;
 	}
 	
@@ -108,16 +107,11 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/modify/{id}", method=RequestMethod.POST)
-	public String modify(HttpSession session, 
+	public String modify(Authentication authentication, 
 			   			 @RequestParam(value="page", required=false, defaultValue="1") Integer currentPage,
 						 @PathVariable("id") Long id,
 						 BoardVo boardVo) {
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		
-		if (session == null || authUser == null) {
-			return "user/login";
-		}
-		
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		BoardVo vo = boardService.getContents(id, authUser.getId());
 		
 		vo.setTitle(boardVo.getTitle());

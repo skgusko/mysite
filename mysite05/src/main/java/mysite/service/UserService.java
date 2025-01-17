@@ -1,5 +1,6 @@
 package mysite.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import mysite.repository.UserRepository;
@@ -7,13 +8,16 @@ import mysite.vo.UserVo;
 
 @Service
 public class UserService {
+	private PasswordEncoder passwordEncoder;
 	private UserRepository userRepository;
 	
-	public UserService(UserRepository userRepository) {
+	public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+		this.passwordEncoder = passwordEncoder;
 		this.userRepository = userRepository;
 	}
 	
 	public void join(UserVo userVo) {
+		userVo.setPassword(passwordEncoder.encode(userVo.getPassword()));
 		userRepository.insert(userVo);
 	}
 

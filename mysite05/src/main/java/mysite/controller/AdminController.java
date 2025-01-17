@@ -10,12 +10,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
-import mysite.security.Auth;
 import mysite.service.FileUploadService;
 import mysite.service.SiteService;
 import mysite.vo.SiteVo;
 
-@Auth(role="ADMIN") //이 Controller의 모든 handler
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
