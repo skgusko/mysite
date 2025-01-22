@@ -88,9 +88,10 @@ public class SecurityConfig implements WebMvcConfigurer {
 					
 					.anyRequest()
 					.permitAll();
-			})
+			});
+			/*
 			.exceptionHandling(exceptionHandling -> { // USER가 /admin 요청하면 403 에러 뜸 
-//				exceptionHandling.accessDeniedPage("/WEB-INF/views/errors/403.jsp");
+//				exceptionHandling.accessDeniedPage("/error/403.jsp");
 				exceptionHandling.accessDeniedHandler(new AccessDeniedHandler() {
 
 					@Override
@@ -102,6 +103,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 					}
 				});
 			});
+			*/
 		return http.build();
     }
 	
