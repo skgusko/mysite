@@ -10,6 +10,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -30,14 +32,18 @@ import mysite.security.UserDetailsServiceImpl;
 @EnableWebSecurity
 public class SecurityConfig implements WebMvcConfigurer {
 
+	//필터 타는 놈이 아닌 경우 여기서 설정
+	@Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+		return webSecurity -> webSecurity.httpFirewall(new DefaultHttpFirewall());
+    }
+	
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-			.csrf((csrf) -> {
+			.csrf(csrf -> csrf.disable())  
 				// csrf 없으면 post로 들어올 때 forbidden 에러 떠서 disable 해놓음 
 				// 아니면 csrf값 같이 hidden으로 넘겨줘서 해결 가능 
-				csrf.disable();  
-			})
 			.formLogin((formLogin) -> {
 				formLogin
 					.loginPage("/user/login")

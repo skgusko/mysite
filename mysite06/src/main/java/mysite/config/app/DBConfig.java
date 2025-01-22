@@ -30,8 +30,11 @@ public class DBConfig {
 		return dataSource;
 	}
 	
+	// 스프링부트에서는 TransactionManager 는 무조건 enable 상태이기에, 따로 설정할 필요 x 
+	/*
 	@Bean
 	public TransactionManager transactionManager(DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource); 
 	}
+	*/
 }

@@ -1,0 +1,25 @@
+# spring configuration
+spring:
+   application:
+      name: mysite06
+
+   devtools:
+      restart: 
+         enabled: true
+      livereload:
+         enabled: true
+
+   main:
+      allow-bean-definition-overriding: true
+
+   # aop
+   aop:
+      auto: false
+      proxy-target-calss: true
+
+  
+# server configuration
+server:
+   port: 8080
+   servlet:
+      context-path: /mysite06
